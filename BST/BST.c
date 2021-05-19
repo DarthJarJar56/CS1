@@ -104,6 +104,55 @@ bool isLocated(Node *root, int target)
     return isLocated(root->leftChild, target);
 }
 
+Node * delNode(Node * root, int val)
+{
+    if (root == NULL)
+        return NULL;
+    
+    if (val < root->data)
+    {
+        root->leftChild = delNode(root->leftChild, val);
+    }
+    else if (val > root->data)
+    {
+        root->rightChild = delNode(root->rightChild, val);
+    }
+    else if (val == root->data)
+    {
+        //the node we want to delete is a leaf node, simple free and return null
+        if (root->leftChild == NULL && root->rightChild == NULL)
+        {
+            free(root);
+            return NULL;
+        }
+
+        //right child is null, left node is not
+        if (root->rightChild == NULL)
+        {
+            //Create a node to store the left child of the root
+            //then free the root and return the temp node as the
+            //new root, effectively swapping the two nodes
+            Node * temp = root->leftChild;
+            free(root);
+            return temp;
+        }
+
+        if (root->leftChild == NULL)
+        {
+            //Create a node to store the right child of the root
+            //then free the root and return the temp node as teh
+            //new root, effectively swapping the two nodes
+            Node * temp = root->rightChild;
+            free(root);
+            return temp;
+        }
+
+        //This is where it gets a bit complicated, if the target node has
+        //2 children, then we can't simply swap with one of them, because
+        //that could invalidate the BST properties. 
+    }
+}
+
 /*
 Post order traversal function. In post order traversal of a tree, we need to start at the leftmost node,
 and traverse by hitting the children before reaching their parents. Post order traversal is generally used
@@ -125,7 +174,7 @@ void postPrint(Node *root)
 /*
 Pre order traversal function, recursion demonstrated with a simple print statement. In pre order traversal of a tree, 
 we start at the root, and move to the leaves starting from the left. Pre order traversals are generally used to create
-a copy of a BST, because it allowsus to start from the root, and add children as we go. 
+a copy of a BST, because it allows us to start from the root, and add children as we go. 
 */
 
 void prePrint(Node *root)
