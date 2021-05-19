@@ -1,3 +1,10 @@
+/*
+This is a generic program that randomly generates arrays between 1-10,
+and sorts them using various common sorting algorithms, including 
+Selection Sort, Bubble Sort, Insertion Sort, Merge Sort, and Quick Sort.
+
+Completed on 05/19/2021
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
