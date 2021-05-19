@@ -104,6 +104,20 @@ bool isLocated(Node *root, int target)
     return isLocated(root->leftChild, target);
 }
 
+/*
+Function to delete nodes from a BST that contain a target value
+This function should take in a value, recursive search for it
+in the BST, and then decide how exactly to delete it and what
+to replace it with using a bunch of if statements. The 3 scenarios
+we can have are as follows:
+    1) The node has no children, in which case we can simply delete it
+    2) The node has 1 child, left or right, in which we delete the "root"
+       and replace it with the child that's not null
+    3) The node has 2 children, in which we need to take the preceding
+       number to it inOrder traversal, and duplicate that into the root
+       then delete the root by calling the function recursively with
+       the duplicate node being the target to look for
+*/
 Node * delNode(Node * root, int val)
 {
     if (root == NULL)
@@ -150,7 +164,24 @@ Node * delNode(Node * root, int val)
         //This is where it gets a bit complicated, if the target node has
         //2 children, then we can't simply swap with one of them, because
         //that could invalidate the BST properties. 
+
+        Node * new = root->leftChild;
+
+        //We're now in the left subtree, so we should traverse to the right most
+        //node to find the greatest value in the left sub tree of the target node
+        while (new->rightChild != NULL)
+            new = new->rightChild;
+        
+        //replace the root node (our target) with the largest value in its left subtree
+        root->data = new->data;
+
+
+        //recursive call to finish the process, targetting the duplicated value
+        //Call it with the leftChild of root so that we don't delete the one we're
+        //currently on
+        root->leftChild = delNode(root->leftChild, new->data);
     }
+    return root; //final return :)
 }
 
 /*
@@ -205,6 +236,8 @@ void inPrint(Node *root)
     inPrint(root->rightChild);
 }
 
+
+//driver main to demonstrate BST functions
 int main()
 {
     int val;
@@ -224,19 +257,42 @@ int main()
     root = insert(root, 16);
     root = insert(root, 5);
 
+    //Display the tree with our traversal print functions
     printf("\nTree in pre order: ");
     prePrint(root);
     printf("\nTree in order: ");
     inPrint(root);
     printf("\nTree in post order: ");
     postPrint(root);
+
+    //Locate the max and minimum value in the tree
     printf("\nMax value in BST: %d", findMax(root));
     printf("\nMin value in BST: %d", findMin(root));
+
+    //Scan for a value to locate in the BST
+    //and return to a bool value
     printf("\nEnter value to locate in BST: ");
     scanf("%d", &val);
     located = isLocated(root, val);
     if (located == true)
-        printf("Found %d in the BST!", val);
+        printf("Found %d in the BST!\n", val);
     else
-        printf("%d not found in the BST", val);
+        printf("%d not found in the BST\n", val);
+    
+
+    //Scan for a value to delete, delete it, and print
+    //the resulting tree traversals
+    printf("Enter value to locate and delete: ");
+    scanf("%d", &val);
+    root = delNode(root, val);
+    printf("\n");
+    printf("New tree traversals: \n");
+    printf("\nPre: ");
+    prePrint(root);
+    printf("\nIn: ");
+    inPrint(root);
+    printf("\nPost: ");
+    postPrint(root);
+
+    return 0;
 }
