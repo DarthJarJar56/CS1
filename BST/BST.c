@@ -246,16 +246,13 @@ int main()
     //tree starts empty
     Node *root = NULL;
 
-    //insert a bunch of numbers
-    root = insert(root, 7);
-    root = insert(root, 10);
-    root = insert(root, 6);
-    root = insert(root, 4);
-    root = insert(root, 8);
-    root = insert(root, 2);
-    root = insert(root, 13);
-    root = insert(root, 16);
-    root = insert(root, 5);
+    root = insert(root, 81);
+    root = insert(root, 92);
+    root = insert(root, 75);
+    root = insert(root, 68);
+    root = insert(root, 98);
+    root = insert(root, 87);
+    root = insert(root, 100);
 
     //Display the tree with our traversal print functions
     printf("\nTree in pre order: ");
