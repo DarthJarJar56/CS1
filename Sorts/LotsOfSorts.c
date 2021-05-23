@@ -9,15 +9,25 @@ Completed on 05/19/2021
 #include <stdlib.h>
 #include <time.h>
 
+//Function that takes in an array, and creates an array of unique values
+//between 1-10
 void shuffle(int * arr)
 {
     int i = 0;
+    
+    //declare used array of flags
     int * used = calloc(10, sizeof(int));
     while (i < 10)
     {
+        //generate our random value
         int r = rand() % 10 + 1;
+
+        //if this value has already been used, try something else
         if (used[r - 1])
             continue;
+        
+        //after using a variable, flag the corresponding index in the used
+        //array as 1, so that we don't use it again
         used[r - 1] = 1;
         arr[i] = r;
         i++;
@@ -331,8 +341,10 @@ void quickSort(int * arr, int n)
     quickSort(arr + frontIndex + 1, backIndex);
 }
 
+//Driver main to test out the sorts
 int main()
 {
+    //Start with a blank array so our shuffle function can create unique ones
     int * arr = calloc(10, sizeof(int));
     shuffle(arr);
     selectionSort(arr);
@@ -354,6 +366,7 @@ int main()
     shuffle(arr);
     quickSort(arr, 10);
 
+    //Printing in main because Quick Sort is recursive, would be scuffed
     printf("\nAFTER QUICK SORT...\n");
     for (int i = 0; i < 10; i++)
     {
